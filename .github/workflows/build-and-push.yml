@@ -28,7 +28,7 @@ jobs:
         with:
           context: .
           push: true
-          tags: ${{ env.IMAGE_NAME }}
+          tags: ${{ env.IMAGE_NAME }}:${{github.SHA}}
           labels: ${{ steps.meta.outputs.labels }}
   
   update_deploy_repo:
