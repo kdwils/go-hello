@@ -35,6 +35,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: push_to_registry
     name: update deploy repo image tag
+    environment: Homelab
     steps:
       - name: checkout deploy repo
         uses: actions/checkout@master
