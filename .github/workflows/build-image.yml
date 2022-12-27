@@ -15,10 +15,3 @@ jobs:
         with:
           context: .
           push: false
-          platforms: linux/amd64,linux/arm64,linux/arm
-          tags: |
-            ${{ steps.meta.outputs.tags }}
-            ${{ env.IMAGE_PATH }}:${{ github.SHA }}
-          labels: ${{ steps.meta.outputs.labels }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
