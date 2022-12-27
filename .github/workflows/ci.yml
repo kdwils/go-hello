@@ -7,6 +7,6 @@ jobs:
     uses: kdwils/homelab-workflow/.github/workflows/build-push-sign.yml@main
     secrets: inherit
     with:
-      image: go-hello
+      image: kdwils/go-hello
       registry: ghcr.io
       environment: Homelab
