@@ -1,5 +1,4 @@
 name: Build Push Sign
-
 on:
   push:
     branches: ["main"]
@@ -62,13 +61,13 @@ jobs:
         if: github.event_name != 'pull_request'
         env:
           COSIGN_EXPERIMENTAL: 1
-        run: cosign sign ${{ env.IMAGE_PATH }}:${{ steps.build-and-publish.outputs.digest}}
+        run: cosign sign ${{ env.IMAGE_PATH }}@${{ steps.build-and-publish.outputs.digest}}
 
       - name: verify the signed Docker image
         if: github.event_name != 'pull_request'
         env:
           COSIGN_EXPERIMENTAL: 1
-        run: cosign verify --output text ${{ env.IMAGE_PATH }}:${{ steps.build-and-publish.outputs.digest}}
+        run: cosign verify --output text ${{ env.IMAGE_PATH }}:${{ github.SHA }}
 
   update_deploy_repo:
     runs-on: ubuntu-latest
