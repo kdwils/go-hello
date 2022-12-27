@@ -9,8 +9,16 @@ jobs:
     runs-on: ubuntu-latest
     environment: Homelab
     steps:
-      - name: build Docker image
+      - name: build image
+        id: build-and-publish
         uses: docker/build-push-action@v3
         with:
           context: .
           push: false
+          platforms: linux/amd64,linux/arm64,linux/arm
+          tags: |
+            ${{ steps.meta.outputs.tags }}
+            ${{ env.IMAGE_PATH }}:${{ github.SHA }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
