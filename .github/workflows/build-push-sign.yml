@@ -82,4 +82,4 @@ jobs:
           git config user.email ${{ secrets.EMAIL }}
           git add .
           git commit -m "bump ${{ env.IMAGE_PATH }} image tag to ${{ github.SHA }}"
-          git push
+          git push https://${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.REPOSITORY }}-deploy.git
