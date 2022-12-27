@@ -4,7 +4,7 @@ on:
     branches: ["main"]
 jobs:
   ci:
-    uses: kdwils/homelab-action/.github/workflows/build-push-sign.yml@main
+    uses: kdwils/homelab-workflow/.github/workflows/build-push-sign.yml@main
     secrets: inherit
     with:
       image: go-hello
