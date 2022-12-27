@@ -27,23 +27,30 @@ jobs:
         uses: docker/metadata-action@v4
         with:
           images: ${{ github.REPOSITORY }}
+          tags: |
+            type=schedule
+            type=ref,event=branch
+            type=ref,event=pr
+            type=sha
       - name: build and push Docker image
         id: build-and-publish
         uses: docker/build-push-action@v3
         with:
           context: .
-          push: true
-          tags: ${{ env.IMAGE_NAME }}:latest
+          push: ${{ github.event_name != 'pull_request' }}
+          tags: |
+            ${{ steps.meta.outputs.tags }}
+            ${{ env.IMAGE_NAME }}:${{ github.SHA }}
           labels: ${{ steps.meta.outputs.labels }}
       - uses: sigstore/cosign-installer@main
       - name: Sign the published Docker image
         env:
           COSIGN_EXPERIMENTAL: 1
-        run: cosign sign ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
+        run: cosign sign ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.SHA }}
       - name: verify the signed Docker image
         env:
           COSIGN_EXPERIMENTAL: 1
-        run: cosign verify -output text ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
+        run: cosign verify -output text ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.SHA }}
 
   # update_deploy_repo:
   #   runs-on: ubuntu-latest
