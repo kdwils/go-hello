@@ -11,6 +11,7 @@ jobs:
       registry: ghcr.io
       environment: Homelab
   update-image-tag:
+    needs: build-push-sign
     uses: kdwils/homelab-workflow/.github/workflows/update-image-tag.yml@main
     secrets: inherit
     with:
