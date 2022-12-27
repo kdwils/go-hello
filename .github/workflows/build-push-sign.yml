@@ -2,7 +2,7 @@ name: Build Push Sign
 
 on:
   push:
-    branches: ["*"]
+    branches: ["main"]
 env:
   IMAGE_PATH: ghcr.io/kdwils/go-hello
 jobs:
@@ -59,11 +59,13 @@ jobs:
       - uses: sigstore/cosign-installer@main
 
       - name: Sign the published Docker image
+        if: github.event_name != 'pull_request'
         env:
           COSIGN_EXPERIMENTAL: 1
         run: cosign sign ${{ env.IMAGE_PATH }}:${{ github.SHA }}
 
       - name: verify the signed Docker image
+        if: github.event_name != 'pull_request'
         env:
           COSIGN_EXPERIMENTAL: 1
         run: cosign verify -output text  ${{ env.IMAGE_PATH }}:${{ github.SHA }}
@@ -79,7 +81,7 @@ jobs:
         with:
           repository: ${{ github.REPOSITORY }}-deploy
           ref: refs/heads/main
-          token: ${{ secrets.AUTH_TOken }}
+          token: ${{ secrets.AUTH_TOKEN }}
 
       - uses: imranismail/setup-kustomize@v1
 
