@@ -10,7 +10,7 @@ jobs:
     permissions:
       packages: write
       id-token: write
-    name: Push Docker image to Docker Hub
+    name: build-push-sign
     runs-on: ubuntu-latest
     environment: Homelab
     steps:
@@ -70,7 +70,7 @@ jobs:
         with:
           repository: ${{ github.REPOSITORY }}-deploy
           ref: refs/heads/main
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.AUTH_TOken }}
 
       - uses: imranismail/setup-kustomize@v1
 
@@ -78,8 +78,7 @@ jobs:
           cd base && kustomize edit set image myapp=${{ env.IMAGE_PATH }}:${{ github.SHA }} && cat kustomization.yaml
 
       - run: |
-          git config user.name ${{ github.REPOSITORY_OWNER }}
-          git config user.email ${{ secrets.EMAIL }}
-          git add .
-          git commit -m "bump ${{ env.IMAGE_PATH }} image tag to ${{ github.SHA }}"
-          git push https://${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.REPOSITORY }}-deploy.git
+          git config --global user.name ${{ github.REPOSITORY_OWNER }}
+          git config --global user.email ${{ secrets.EMAIL }}
+          git commit -am "bump ${{ env.IMAGE_PATH }} image tag to ${{ github.SHA }}"
+          git push
