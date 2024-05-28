@@ -1,0 +1,45 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Rollout
+metadata:
+  name: rollout-bluegreen
+  namespace: go-hello
+spec:
+  replicas: 1
+  revisionHistoryLimit: 1
+  selector:
+    matchLabels:
+      app: go-hello
+  strategy:
+    canary:
+      steps:
+        - setWeight: 0
+        - pause: { duration: 1m }
+        - setWeight: 20
+        - pause: { duration: 1m }
+        - setWeight: 50
+        - pause: { duration: 1m }
+        - setWeight: 100
+        - pause: {}
+      trafficRouting:
+        istio:
+          virtualService:
+            name: go-hello
+            routes:
+              - go-hello
+          destinationRule:
+            name: rollout-destrule
+            canarySubsetName: canary
+            stableSubsetName: stable
+  template:
+    metadata:
+      labels:
+        app: go-hello
+        backstage.io/kubernetes-id: go-hello
+    spec:
+      containers:
+        - image: ghcr.io/kdwils/go-hello:sha-3bc4a747bfcf04f69fe8f0a196cd219047eb69d2
+          imagePullPolicy: Always
+          name: go-hello-rollouts-demo
+          ports:
+            - containerPort: 8080
+              name: http

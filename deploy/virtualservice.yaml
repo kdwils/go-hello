@@ -1,0 +1,28 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: go-hello
+  namespace: go-hello
+spec:
+  gateways:
+    - go-hello-gateway
+  hosts:
+    - go-hello.int.kyledev.co
+  http:
+    - match:
+        - uri:
+            prefix: /
+      name: go-hello
+      route:
+        - destination:
+            host: go-hello.go-hello.svc.cluster.local
+            subset: stable
+            port:
+              number: 80
+          weight: 100
+        - destination:
+            host: go-hello.go-hello.svc.cluster.local
+            subset: canary
+            port:
+              number: 80
+          weight: 0

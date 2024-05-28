@@ -1,24 +1,24 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
+  name: go-hello
+  namespace: "go-hello"
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt-prod
-    kubernetes.io/ingress.class: nginx
-  name: go-hello
-  namespace: go-hello
 spec:
+  ingressClassName: nginx
   rules:
     - host: go-hello.int.kyledev.co
       http:
         paths:
-          - backend:
-              service:
-                name: go-hello
-                port:
-                  name: http
-            path: /
+          - path: /
             pathType: Prefix
+            backend:
+              service:
+                name: go-hello-preview
+                port:
+                  number: 80
   tls:
     - hosts:
         - go-hello.int.kyledev.co
-      secretName: wildcard-kyledev-tls-prod
+      secretName: go-hello-kyledev-tls-prod
