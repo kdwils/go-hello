@@ -8,7 +8,7 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-    - host: go-hello.int.kyledev.co
+    - host: go-hello-preview.int.kyledev.co
       http:
         paths:
           - path: /
@@ -16,6 +16,31 @@ spec:
             backend:
               service:
                 name: go-hello-preview
+                port:
+                  number: 80
+  tls:
+    - hosts:
+        - go-hello-preview.int.kyledev.co
+      secretName: go-hello-preview-kyledev-tls-prod
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: go-hello
+  namespace: "go-hello"
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: go-hello.int.kyledev.co
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: go-hello
                 port:
                   number: 80
   tls:
