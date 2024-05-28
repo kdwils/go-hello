@@ -6,7 +6,7 @@ resources:
   - ingress-preview.yaml
   - namespace.yaml
   - service.yaml
-  - rollout-canary.yaml
+  # - rollout-canary.yaml
   - virtualservice.yaml
   - destinationrule.yaml
   - gateway.yaml
