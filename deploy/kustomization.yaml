@@ -6,6 +6,7 @@ resources:
   - namespace.yaml
   - service.yaml
   - rollout-blue-green.yaml
+  - ingress-preview.yaml
   # - rollout-canary.yaml
   # - virtualservice.yaml
   # - destinationrule.yaml
