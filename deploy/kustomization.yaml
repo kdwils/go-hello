@@ -2,11 +2,11 @@ kind: Kustomization
 apiVersion: kustomize.config.k8s.io/v1beta1
 
 resources:
-  - destinationrule.yaml
-  - gateway.yaml
   - ingress.yaml
   - namespace.yaml
+  - service.yaml
   - rollout-blue-green.yaml
   # - rollout-canary.yaml
-  - service.yaml
-  - virtualservice.yaml
+  # - virtualservice.yaml
+  # - destinationrule.yaml
+  # - gateway.yaml
