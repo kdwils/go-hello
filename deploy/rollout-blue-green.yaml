@@ -22,7 +22,7 @@ spec:
         backstage.io/kubernetes-id: go-hello
     spec:
       containers:
-        - image: ghcr.io/kdwils/go-hello:sha-3bc4a747bfcf04f69fe8f0a196cd219047eb69d2
+        - image: ghcr.io/kdwils/go-hello:main
           imagePullPolicy: Always
           name: go-hello-rollouts-demo
           ports:

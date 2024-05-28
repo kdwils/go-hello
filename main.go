@@ -7,7 +7,7 @@ import (
 
 func main() {
 	http.HandleFunc("/", HelloHandler)
-	http.HandleFunc("/canary", RolloutHandler)
+	// http.HandleFunc("/canary", RolloutHandler)
 	http.ListenAndServe(":8080", nil)
 }
 
