@@ -14,4 +14,6 @@ RUN CGO_ENABLED=0 go build -o go-hello .
 FROM alpine
 COPY --from=builder /app/go-hello .
 
+EXPOSE 8080
+
 ENTRYPOINT [ "./go-hello" ]
