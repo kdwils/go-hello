@@ -3,11 +3,10 @@ on:
   push:
     branches: ["main"]
 jobs:
-  build-push-sign:
+  build_push_docker_image:
     uses: kdwils/homelab-workflow/.github/workflows/build-push-sign.yml@main
     secrets: inherit
     with:
       image: kdwils/go-hello
       registry: ghcr.io
-      environment: Homelab
       platforms: linux/amd64,linux/arm64
